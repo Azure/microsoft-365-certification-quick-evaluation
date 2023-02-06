@@ -168,12 +168,12 @@ With the Azure login Action, you can perform an Azure login using [Azure service
   }
   
 ```
-  *  Alternatively,  to create service principal that has access over atleast one management group scope, run the below Azure CLI command.
+  *  Alternatively,  to create service principal that has access of the subscription scope, run the below Azure CLI command.
 
 ```bash  
   
    az ad sp create-for-rbac --name "myApp" --role "Resource Policy Contributor"  \
-                            --scopes  /providers/Microsoft.Management/managementGroups/{management-group-id} \
+                            --scopes  /subscriptions/{subscription-id} \
 
                             
   # Replace {management-group-name} with the management group identifier
@@ -187,6 +187,10 @@ With the Azure login Action, you can perform an Azure login using [Azure service
     "password": "<GUID>",
     "tenant": "<GUID>"
   }
+
+  # Assign the Contributor role to the new created service principal
+   az role assignment create --assignee "{appId}" --role "Contributor"  \
+                            --scopes  /subscriptions/{subscription-id} \
   
   # copy the GUID values for appId, password and tenant from above JSON and replace them in the following JSON. Once replaced, copy the JSON to clipboard
    
@@ -204,32 +208,6 @@ With the Azure login Action, you can perform an Azure login using [Azure service
   * Paste the contents of the clipboard as the value of  the above secret variable.
   * Use the secret variable in the Azure Login Action(Refer the End-to-End Sample Workflows section )
 
-
-
-
-If needed, you can modify the Azure CLI command to further reduce the scope for which permissions are provided. Here is the command that gives contributor access to only a resource group.
-
-```bash  
-  
-   az ad sp create-for-rbac --name "myApp" --role "Resource Policy Contributor"  \
-                            --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group} \
-                            --sdk-auth
-                            
-  # Replace {subscription-id}, {resource-group} with the subscription and resource group identifiers.
-  
-```
-
-You can also provide permissions to multiple scopes using the Azure CLI command: 
-
-```bash  
-  
-   az ad sp create-for-rbac --name "myApp" --role "Resource Policy Contributor"  \
-                            --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group1} \
-                            /subscriptions/{subscription-id}/resourceGroups/{resource-group2} \
-                            --sdk-auth
-                            
-  # Replace {subscription-id}, {resource-group1}, {resource-group2} with the subscription and resource group identifiers.
-  
 ```
 # Feedback
 
