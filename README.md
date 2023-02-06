@@ -152,31 +152,10 @@ With the Azure login Action, you can perform an Azure login using [Azure service
 ```bash  
   
    az ad sp create-for-rbac --name "myApp" --role "Resource Policy Contributor"  \
-                            --scopes /subscriptions/{subscription-id} \
-                            --sdk-auth
-                            
-  # Replace {subscription-id} with the subscription identifiers
-  
-  # The command should output a JSON object similar to this:
-
-  {
-    "clientId": "<GUID>",
-    "clientSecret": "<GUID>",
-    "subscriptionId": "<GUID>",
-    "tenantId": "<GUID>",
-    (...)
-  }
-  
-```
-  *  Alternatively,  to create service principal that has access of the subscription scope, run the below Azure CLI command.
-
-```bash  
-  
-   az ad sp create-for-rbac --name "myApp" --role "Resource Policy Contributor"  \
                             --scopes  /subscriptions/{subscription-id} \
 
                             
-  # Replace {management-group-name} with the management group identifier
+  # Replace {subscription-id} with the subscription identifier
   
   # The command should output a JSON object similar to this:
 
