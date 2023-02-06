@@ -55,7 +55,7 @@ jobs:
 The above workflow will get assessments by report.
 
 
-### Sample workflow to get Microsoft 365 quick assessments by deployment.
+### Sample workflow to get Microsoft 365 quick assessments by ARM template deployment.
 
 
 ```yaml
@@ -95,7 +95,7 @@ jobs:
 The above workflow will get Microsoft 365 quick assessments by ARM template deployment. 
 
 
-### Sample workflow to get Microsoft 365 quick assessments by deployment.
+### Sample workflow to get Microsoft 365 quick assessments by bicep deployment.
 
 
 ```yaml
