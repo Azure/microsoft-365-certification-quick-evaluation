@@ -9,16 +9,16 @@ The definition of this Github Action is in [action.yml]()
 
 # Pre-requisites:
 * Azure Login Action: Authenticate using [Azure Login](https://github.com/Azure/login)  action. The Get Quick Assessments action assumes that Azure Login is done using an Azure service principal that has [sufficient permissions](https://docs.microsoft.com/en-us/azure/governance/policy/overview#rbac-permissions-in-azure-policy) trigger and get quick assessment on the selected scopes. Once login is done, the next set of actions in the workflow can perform tasks such as geting quick assessments by report or by deployment. For more details on permissions, checkout 'Configure credentials for Azure login action' section in this page  or alternatively you can refer the full [documentation](https://github.com/Azure/login) of Azure Login Action.
-* Create an ACAT report(optional): Go to Azure Portal to create an ACAT report for you application.
-* Prepare the deployment id(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of Get Quick Assessments action.
+* Create an ACAT report(optional): Go to Azure Portal to create an ACAT report for you application. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
+* Prepare the deployment id(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of Get Quick Assessments action. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
 
 
 
 # Inputs for the Action
 
 * `cred`: mandatory. The credential you use to get quick assessments.
-* `report-name`: Optional. If you want to get quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.
-* `deployment-id`: Optional. If you want to get quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-id`. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.
+* `report-name`: Optional. If you want to get quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created. At least one of the 2 parameters `report-name` and `deployment-id` must be filled. (If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
+* `deployment-id`: Optional. If you want to get quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-id`. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.(If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 
 
 # End-to-End Sample Workflows
@@ -46,7 +46,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: analyse Microsoft 365 compliance results
-      uses: ./ # Uses an action in the root directory
+      uses: azure/get-quick-assessment@v0
       with:
         cred: ${{ secrets.AZURE_CREDENTIALS }}
         report-name: 'test-report'
@@ -86,10 +86,10 @@ jobs:
     - run: echo ${{ steps.deployarm.outputs.deploymentId }}
 
     - name: analyse Microsoft 365 compliance results
-      uses: ./ # Uses an action in the root directory
+      uses: azure/get-quick-assessment@v0
       with:
         cred: ${{ secrets.AZURE_CREDENTIALS }}
-        deployment-name: ${{ steps.deployarm.outputs.deploymentId }}
+        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
         
 ```
 The above workflow will get quick assessments by deployment. 
