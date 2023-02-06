@@ -1,0 +1,35 @@
+{
+  "name": "analyse-microsoft-365-compliance-results",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "package": "ncc build --source-map --license licenses.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qinzhouxu/analyse-microsoft-365-compliance-results.git"
+  },
+  "keywords": [],
+  "author": "Microsoft",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qinzhouxu/analyse-microsoft-365-compliance-results/issues"
+  },
+  "homepage": "https://github.com/qinzhouxu/analyse-microsoft-365-compliance-results#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "@azure/arm-appcomplianceautomation": "^1.0.0-beta.1",
+    "@azure/arm-policyinsights": "^5.0.0",
+    "@azure/arm-resources": "^5.1.0",
+    "@azure/identity": "^3.1.1",
+    "axios": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.11",
+    "@vercel/ncc": "^0.34.0",
+    "typescript": "^4.9.3"
+  }
+}
