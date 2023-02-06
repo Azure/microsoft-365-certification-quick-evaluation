@@ -8,7 +8,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Endpoints = void 0;
-const armEndpoint = "https://eastus2euap.management.azure.com";
+const armEndpoint = "https://management.azure.com";
 const RP_NAMESPACE = "Microsoft.AppComplianceAutomation";
 const version = "2023-02-15-preview";
 exports.Endpoints = {
