@@ -8,7 +8,7 @@ The definition of this Github Action is in [action.yml]()
 
 
 # Pre-requisites:
-* Azure Login Action: Authenticate using [Azure Login](https://github.com/Azure/login)  action. The get Microsoft 365 quick assessments action assumes that Azure Login is done using an Azure service principal that has [sufficient permissions](https://docs.microsoft.com/en-us/azure/governance/policy/overview#rbac-permissions-in-azure-policy) trigger and get quick assessment on the selected scopes. Once login is done, the next set of actions in the workflow can perform tasks such as geting quick assessments by report or by deployment. For more details on permissions, checkout 'Configure credentials for Azure login action' section in this page  or alternatively you can refer the full [documentation](https://github.com/Azure/login) of Azure Login Action.
+* Azure Login Action: Authenticate using [Azure Login](https://github.com/Azure/login)  action. The get Microsoft 365 quick assessments action assumes that Azure Login is done using an Azure service principal that has [sufficient permissions]() trigger and get quick assessment on the selected scopes. Once login is done, the next set of actions in the workflow can perform tasks such as geting quick assessments by report or by deployment. For more details on permissions, checkout 'Configure credentials for Azure login action' section in this page  or alternatively you can refer the full [documentation](https://github.com/Azure/login) of Azure Login Action.
 * Create an ACAT report(optional): Go to Azure Portal to create an ACAT report for you application, see [ACAT tutorial](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat). At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
 * Prepare the deployment id(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of get Microsoft 365 quick assessments action. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
 
@@ -16,7 +16,7 @@ The definition of this Github Action is in [action.yml]()
 
 # Inputs for the Action
 
-* `cred`: mandatory. The credential you use to get Microsoft 365 quick assessments. This cred should be the same with the one in login.
+* `tenant-id`: mandatory. The tenant you logged in.
 * `report-name`: Optional. If you want to get Microsoft 365 quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created.[How to create an ACAT report](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat).At least one of the 2 parameters `report-name` and `deployment-id` must be filled. (If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 * `deployment-id`: Optional. If you want to get Microsoft 365 quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-id`. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.(If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 
@@ -45,10 +45,10 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: analyse Microsoft 365 compliance results
+    - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        cred: ${{ secrets.AZURE_CREDENTIALS }}
+        tenant-id: ${{ secrets.TENANT_ID }}
         report-name: 'test-report'
         
 ```
@@ -75,6 +75,7 @@ jobs:
       uses: Azure/login@v1.4.6
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Deploy with ARM template
       id: deployarm
       uses: azure/arm-deploy@v1
@@ -85,10 +86,10 @@ jobs:
         parameters: storageAccountType=Standard_LRS
     - run: echo ${{ steps.deployarm.outputs.deploymentId }}
 
-    - name: analyse Microsoft 365 compliance results
+    - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        cred: ${{ secrets.AZURE_CREDENTIALS }}
+        tenant-id: ${{ secrets.TENANT_ID }}
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
         
 ```
@@ -125,10 +126,10 @@ jobs:
         parameters: storageAccountType=Standard_LRS
     - run: echo ${{ steps.deploybicep.outputs.deploymentId }}
 
-    - name: analyse Microsoft 365 compliance results
+    - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        cred: ${{ secrets.AZURE_CREDENTIALS }}
+        tenant-id: ${{ secrets.TENANT_ID }}
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
         
 ```
