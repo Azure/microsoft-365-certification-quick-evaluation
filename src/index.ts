@@ -3,9 +3,10 @@ import { AppComplianceAutomationToolForMicrosoft365 } from "@azure/arm-appcompli
 import { AzureCliCredential } from "@azure/identity";
 import { getResourceIdsByDeployment } from "./data/deployment";
 import { onboard } from "./data/onboard";
-import { getPolicyStates } from "./data/policyStates";
 import { createOrUpdateReport, getReport } from "./data/report";
+import { triggerEvaluation } from "./data/triggerEvaluation";
 import { getCredToken, getResourceSubscription, waitOnboardFinish } from "./utils/common";
+import { printAssessments } from "./utils/output";
 
 async function start() {
   try {
@@ -33,16 +34,17 @@ async function start() {
     const subscriptionIds = resourceIds.map(id => getResourceSubscription(id));
 
     await onboard(token, tenantId, subscriptionIds);
-    core.info(`Successfully onboarded subscriptions`);
     await waitOnboardFinish();
+    core.info(`Successfully onboarded subscriptions`);
 
     if (reportName) {
       await createOrUpdateReport(acatClient, token, reportName, resourceIds);
       core.info(`Successfully created or updated report ${reportName}`);
     }
 
-    core.info("Evaluating policy states for all subscriptions...");
-    await getPolicyStates(cred, resourceIds);
+    core.info("Generating quick assessments for all resources...");
+    const results = await triggerEvaluation(token, tenantId, resourceIds);
+    printAssessments(results);
 
   } catch (error) {
     core.setFailed(error.message);
