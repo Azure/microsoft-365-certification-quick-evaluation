@@ -152,33 +152,29 @@ With the Azure login Action, you can perform an Azure login using [Azure service
 
 ```bash  
   
-   az ad sp create-for-rbac --name "myApp" --role "Resource Policy Contributor"  \
+   az ad sp create-for-rbac --name "myApp" --role contributor  \
                             --scopes  /subscriptions/{subscription-id} \
+                            --sdk-auth
 
                             
   # Replace {subscription-id} with the subscription identifier
   
   # The command should output a JSON object similar to this:
 
-  {
-    "appId": "<GUID>",
-    "displayName": "<display-name>",
-    "name": "<url>",
-    "password": "<GUID>",
-    "tenant": "<GUID>"
-  }
+ {
+   "clientId": "<appId>",
+   "clientSecret": "<STRING>",
+   "subscriptionId": "<GUID>",
+   "tenantId": "<GUID>",
+   "resourceManagerEndpointUrl": "<URL>"
+   (...)
+ }
 
   # Assign the Contributor role to the new created service principal
-   az role assignment create --assignee "{appId}" --role "Contributor"  \
+   az role assignment create --assignee "{appId}" --role "Resource Policy Contributor"  \
                             --scopes  /subscriptions/{subscription-id} \
   
-  # copy the GUID values for appId, password and tenant from above JSON and replace them in the following JSON. Once replaced, copy the JSON to clipboard
-   
-  {
-    "clientId": "<appId>",
-    "clientSecret": "<password>",  
-    "tenantId": "<tenant>"
-  }
+  # Store the output JSON object of the above az cli command as the value of secret variable, for example 'AZURE_CREDENTIALS'
   
   
   
