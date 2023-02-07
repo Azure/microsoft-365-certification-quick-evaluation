@@ -4,3 +4,8 @@ export enum AsyncStatus {
   CANCELED = "Canceled",
   RUNNING = "Running",
 }
+
+export enum ResourceStatus {
+  HEALTHY = "Healthy",
+  UNHEALTHY = "Unhealthy"
+}
