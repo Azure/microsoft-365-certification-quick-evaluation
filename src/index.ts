@@ -24,6 +24,7 @@ async function start() {
     let resourceIds: string[] = [];
     if (deploymentIds) {
       resourceIds = await getResourceIdsByDeployments(cred, JSON.parse(deploymentIds));
+      core.info(JSON.stringify(resourceIds));
     } else {
       const report = await getReport(acatClient, token, reportName)
       resourceIds = report.properties.resources.map(meta => meta.resourceId);

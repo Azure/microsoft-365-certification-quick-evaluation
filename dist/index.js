@@ -311,6 +311,7 @@ function start() {
             let resourceIds = [];
             if (deploymentIds) {
                 resourceIds = yield (0, deployment_1.getResourceIdsByDeployments)(cred, JSON.parse(deploymentIds));
+                core.info(JSON.stringify(resourceIds));
             }
             else {
                 const report = yield (0, report_1.getReport)(acatClient, token, reportName);
