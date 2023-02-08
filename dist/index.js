@@ -300,18 +300,21 @@ const output_1 = __nccwpck_require__(6817);
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const deploymentIds = core.getInput('deployment-ids');
+            const deploymentJson = core.getInput('deployment-ids');
             const reportName = core.getInput('report-name');
-            if ((!deploymentIds || deploymentIds.length === 0) && !reportName) {
+            if (!deploymentJson && !reportName) {
                 throw new Error("Please configure deployment id or report name");
+            }
+            let deploymentIds = [];
+            if (deploymentJson) {
+                deploymentIds = JSON.parse(deploymentJson);
             }
             const cred = new identity_1.AzureCliCredential();
             const token = yield (0, common_1.getCredToken)(cred);
             const acatClient = new arm_appcomplianceautomation_1.AppComplianceAutomationToolForMicrosoft365(cred);
             let resourceIds = [];
             if (deploymentIds) {
-                resourceIds = yield (0, deployment_1.getResourceIdsByDeployments)(cred, JSON.parse(deploymentIds));
-                core.info(JSON.stringify(resourceIds));
+                resourceIds = yield (0, deployment_1.getResourceIdsByDeployments)(cred, deploymentIds);
             }
             else {
                 const report = yield (0, report_1.getReport)(acatClient, token, reportName);

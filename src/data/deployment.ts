@@ -1,6 +1,5 @@
 import { ResourceManagementClient, ResourceReference } from "@azure/arm-resources";
 import { AzureCliCredential } from "@azure/identity";
-import { all } from "axios";
 import { getDeploymentMeta } from "../utils/common";
 
 export async function getResourceIdsByDeployment(
@@ -27,7 +26,7 @@ export async function getResourceIdsByDeployments(
   deploymentIds: string[]
 ): Promise<string[]> {
 
-  const promises= deploymentIds.map(async id => await getResourceIdsByDeployment(cred, id));
+  const promises = deploymentIds.map(async id => await getResourceIdsByDeployment(cred, id));
   const allResources = await Promise.all(promises);
   return [... new Set(allResources.flat())];
 }
