@@ -26,4 +26,4 @@ jobs:
     - name: get Microsoft 365 quick assessments
       uses: ./ # Uses an action in the root directory
       with:
-        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        deployment-id: ${{ steps.deploybicep.outputs.deploymentId }}
