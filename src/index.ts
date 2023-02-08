@@ -19,7 +19,11 @@ async function start() {
 
     let deploymentIds: string[] = [];
     if (deploymentJson) {
-      deploymentIds = JSON.parse(deploymentJson);
+      try {
+        deploymentIds = JSON.parse(deploymentJson);
+      } catch (error) {
+        core.setFailed(`Invalid json string in deployment ids:${deploymentIds}, error message:${error.message}`);
+      }
     }
     const cred = new AzureCliCredential();
     const token = await getCredToken(cred);

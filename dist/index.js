@@ -307,7 +307,12 @@ function start() {
             }
             let deploymentIds = [];
             if (deploymentJson) {
-                deploymentIds = JSON.parse(deploymentJson);
+                try {
+                    deploymentIds = JSON.parse(deploymentJson);
+                }
+                catch (error) {
+                    core.setFailed(`Invalid json string in deployment ids:${deploymentIds}, error message:${error.message}`);
+                }
             }
             const cred = new identity_1.AzureCliCredential();
             const token = yield (0, common_1.getCredToken)(cred);
