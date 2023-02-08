@@ -12,6 +12,14 @@ jobs:
       uses: Azure/login@v1.4.6
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Get quick assessments by report
+    - name: get Microsoft 365 quick assessments
+      uses: ./ # Uses an action in the root directory
+      with:
+        report-name: ${{ secrets.REPORT_NAME }}
+
+    # Get quick assessments by deployment of ARM template    
     - name: Deploy with ARM template
       id: deployarm
       uses: azure/arm-deploy@v1
@@ -26,3 +34,10 @@ jobs:
       uses: ./ # Uses an action in the root directory
       with:
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+
+    # Get quick assessments by deployment and update the deployed resources in the report.
+    - name: get Microsoft 365 quick assessments
+      uses: ./ # Uses an action in the root directory
+      with:
+        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        report-name: ${{ secrets.REPORT_NAME }}    
