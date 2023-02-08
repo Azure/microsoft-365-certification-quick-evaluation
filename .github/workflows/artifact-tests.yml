@@ -14,7 +14,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     # Get quick assessments by report
-    - name: get Microsoft 365 quick assessments
+    - name: get M365 quick assessments by report
       uses: ./ # Uses an action in the root directory
       with:
         report-name: ${{ secrets.REPORT_NAME }}
@@ -39,7 +39,7 @@ jobs:
         parameters: storageAccountType=Standard_LRS
 
     # Get quick assessments by deployment and update the deployed resources in the report.
-    - name: get Microsoft 365 quick assessments
+    - name: get M365 quick assessments by deployment ids
       uses: ./ # Uses an action in the root directory
       with:
         deployment-ids: '[
@@ -48,7 +48,7 @@ jobs:
         ]'
 
     # Get quick assessments by deployment and update the deployed resources in the report.
-    - name: get Microsoft 365 quick assessments
+    - name: get M365 quick assessments by deployment ids and update report
       uses: ./ # Uses an action in the root directory
       with:
         deployment-ids: '[
