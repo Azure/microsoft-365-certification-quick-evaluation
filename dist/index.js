@@ -103,7 +103,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const endpoints_1 = __nccwpck_require__(2268);
 const enum_1 = __nccwpck_require__(2038);
 const network_1 = __nccwpck_require__(5509);
-function onboard(token, tenantId, subscriptionIds) {
+function onboard(token, subscriptionIds) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield axios_1.default.post(endpoints_1.Endpoints.onboard, {
@@ -112,7 +112,6 @@ function onboard(token, tenantId, subscriptionIds) {
             headers: {
                 "Authorization": token,
                 "Content-Type": "application/json",
-                "x-ms-client-tenant-id": tenantId,
                 "x-ms-aad-user-token": token
             }
         });
@@ -215,7 +214,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const endpoints_1 = __nccwpck_require__(2268);
 const enum_1 = __nccwpck_require__(2038);
 const network_1 = __nccwpck_require__(5509);
-function triggerEvaluation(token, tenantId, resourceIds) {
+function triggerEvaluation(token, resourceIds) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield axios_1.default.post(endpoints_1.Endpoints.triggerEvaluation, {
@@ -224,7 +223,6 @@ function triggerEvaluation(token, tenantId, resourceIds) {
             headers: {
                 "Authorization": token,
                 "Content-Type": "application/json",
-                "x-ms-client-tenant-id": tenantId,
                 "x-ms-aad-user-token": token
             }
         });
@@ -294,7 +292,6 @@ const output_1 = __nccwpck_require__(6817);
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const tenantId = core.getInput('tenant-id');
             const deploymentId = core.getInput('deployment-id');
             const reportName = core.getInput('report-name');
             if (!deploymentId && !reportName) {
@@ -312,7 +309,7 @@ function start() {
                 resourceIds = report.properties.resources.map(meta => meta.resourceId);
             }
             const subscriptionIds = resourceIds.map(id => (0, common_1.getResourceSubscription)(id));
-            yield (0, onboard_1.onboard)(token, tenantId, subscriptionIds);
+            yield (0, onboard_1.onboard)(token, subscriptionIds);
             yield (0, common_1.waitOnboardFinish)();
             core.info(`Successfully onboarded subscriptions`);
             if (reportName) {
@@ -320,7 +317,7 @@ function start() {
                 core.info(`Successfully created or updated report ${reportName}`);
             }
             core.info("Generating quick assessments for all resources...");
-            const results = yield (0, triggerEvaluation_1.triggerEvaluation)(token, tenantId, resourceIds);
+            const results = yield (0, triggerEvaluation_1.triggerEvaluation)(token, resourceIds);
             (0, output_1.printAssessments)(results);
         }
         catch (error) {

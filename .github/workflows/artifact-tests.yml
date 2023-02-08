@@ -35,6 +35,5 @@ jobs:
     - name: get Microsoft 365 quick assessments
       uses: ./ # Uses an action in the root directory
       with:
-        tenant-id: ${{ secrets.TENANT_ID }}
         report-name: 'test-report'
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}

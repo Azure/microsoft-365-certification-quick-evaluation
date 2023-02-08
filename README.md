@@ -16,7 +16,6 @@ The definition of this Github Action is in [action.yml]()
 
 # Inputs for the Action
 
-* `tenant-id`: Mandatory. The id of the tenant that you logged in.
 * `report-name`: Optional. If you want to get Microsoft 365 quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created.[How to create an ACAT report](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat).At least one of the 2 parameters `report-name` and `deployment-id` must be filled. (If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 * `deployment-id`: Optional. If you want to get Microsoft 365 quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-id`. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.(If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 
@@ -48,7 +47,6 @@ jobs:
     - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        tenant-id: ${{ secrets.TENANT_ID }}
         report-name: 'test-report'
         
 ```
@@ -89,7 +87,6 @@ jobs:
     - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        tenant-id: ${{ secrets.TENANT_ID }}
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
         
 ```
@@ -129,7 +126,7 @@ jobs:
     - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        tenant-id: ${{ secrets.TENANT_ID }}
+
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
         
 ```
