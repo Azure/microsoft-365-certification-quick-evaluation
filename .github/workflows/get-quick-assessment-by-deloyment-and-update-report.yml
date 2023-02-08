@@ -22,18 +22,9 @@ jobs:
         parameters: storageAccountType=Standard_LRS
     - run: echo ${{ steps.deployarm.outputs.deploymentId }}
 
-    - name: Deploy with bicep
-      id: deploybicep
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
-        template: ./deploy/Storage.bicep
-        parameters: storageAccountType=Standard_LRS
-    - run: echo ${{ steps.deploybicep.outputs.deploymentId }}
-
     - name: get Microsoft 365 quick assessments
       uses: ./ # Uses an action in the root directory
       with:
-        report-name: 'test-report'
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        report-name: ${{ secrets.REPORT_NAME }} 
+        # Pass both the 2 parameters, action will get quick assessments of the deployed resources in the deployment-id, and help update the resource list in the report.
