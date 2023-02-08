@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import { AppComplianceAutomationToolForMicrosoft365 } from "@azure/arm-appcomplianceautomation";
 import { AzureCliCredential } from "@azure/identity";
-import { getResourceIdsByDeployment } from "./data/deployment";
+import { getResourceIdsByDeployments } from "./data/deployment";
 import { onboard } from "./data/onboard";
 import { createOrUpdateReport, getReport } from "./data/report";
 import { triggerEvaluation } from "./data/triggerEvaluation";
@@ -10,10 +10,10 @@ import { printAssessments } from "./utils/output";
 
 async function start() {
   try {
-    const deploymentId = core.getInput('deployment-id');
+    const deploymentJson = core.getInput('deployment-ids');
     const reportName = core.getInput('report-name');
 
-    if (!deploymentId && !reportName) {
+    if (!deploymentJson && !reportName) {
       throw new Error("Please configure deployment id or report name");
     }
 
@@ -22,9 +22,18 @@ async function start() {
     const acatClient = new AppComplianceAutomationToolForMicrosoft365(cred);
 
     let resourceIds: string[] = [];
-
-    if (deploymentId) {
-      resourceIds = await getResourceIdsByDeployment(cred, deploymentId);
+    
+    if (deploymentJson) {
+      let deploymentIds: string[] = [];
+      try {
+        deploymentIds = JSON.parse(deploymentJson);
+        if (deploymentIds.length === 0) {
+          core.setFailed("Deployment ids can not be empty");
+        }
+      } catch (error) {
+        core.setFailed(`Invalid json string in deployment ids "${deploymentJson}", error message:${error.message}`);
+      }
+      resourceIds = await getResourceIdsByDeployments(cred, deploymentIds);
     } else {
       const report = await getReport(acatClient, token, reportName)
       resourceIds = report.properties.resources.map(meta => meta.resourceId);

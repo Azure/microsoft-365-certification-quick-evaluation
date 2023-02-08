@@ -4,8 +4,8 @@ inputs:
   report-name:
     description: 'name of the compliance report'
     required: false
-  deployment-id:
-    description: 'deployment id'
+  deployment-ids:
+    description: 'deployment ids, array of string in json format'
     required: false
 runs:
   using: 'node16'

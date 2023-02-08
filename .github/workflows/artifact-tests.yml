@@ -14,7 +14,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     # Get quick assessments by report
-    - name: get Microsoft 365 quick assessments
+    - name: get M365 quick assessments by report
       uses: ./ # Uses an action in the root directory
       with:
         report-name: ${{ secrets.REPORT_NAME }}
@@ -28,16 +28,31 @@ jobs:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
         template: ./deploy/Storage.template.json
         parameters: storageAccountType=Standard_LRS
-    - run: echo ${{ steps.deployarm.outputs.deploymentId }}
 
-    - name: get Microsoft 365 quick assessments
-      uses: ./ # Uses an action in the root directory
+    - name: Deploy with Bicep
+      id: deploybicep
+      uses: azure/arm-deploy@v1
       with:
-        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
+        template: ./deploy/Storage.bicep
+        parameters: storageAccountType=Standard_LRS
 
     # Get quick assessments by deployment and update the deployed resources in the report.
-    - name: get Microsoft 365 quick assessments
+    - name: get M365 quick assessments by deployment ids
       uses: ./ # Uses an action in the root directory
       with:
-        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        deployment-ids: '[
+          "${{ steps.deployarm.outputs.deploymentId }}",
+          "${{ steps.deploybicep.outputs.deploymentId }}"
+        ]'
+
+    # Get quick assessments by deployment and update the deployed resources in the report.
+    - name: get M365 quick assessments by deployment ids and update report
+      uses: ./ # Uses an action in the root directory
+      with:
+        deployment-ids: '[
+          "${{ steps.deployarm.outputs.deploymentId }}",
+          "${{ steps.deploybicep.outputs.deploymentId }}"
+        ]'
         report-name: ${{ secrets.REPORT_NAME }}    
