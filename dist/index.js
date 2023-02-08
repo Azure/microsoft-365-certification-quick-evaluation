@@ -406,7 +406,7 @@ function isResponseOk(status) {
 }
 exports.isResponseOk = isResponseOk;
 const RETRY_AFTER = 2000;
-const MAX_RETRY = 450;
+const MAX_RETRY = 900;
 function pollUntilDone(token, operationUrl) {
     return __awaiter(this, void 0, void 0, function* () {
         let retryCnt = 0;

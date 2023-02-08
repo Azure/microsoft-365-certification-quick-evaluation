@@ -3,7 +3,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Get quick assessments by deployment and update report
+    name: Get By ARM Template
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -26,5 +26,3 @@ jobs:
       uses: ./ # Uses an action in the root directory
       with:
         deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
-        report-name: ${{ secrets.REPORT_NAME }} 
-        # Pass both the 2 parameters, action will get quick assessments of the deployed resources in the deployment-id, and help update the resource list in the report.
