@@ -5,7 +5,6 @@ import { isResponseOk, pollUntilDone } from "../utils/network";
 
 export async function onboard(
   token: string,
-  tenantId: string,
   subscriptionIds: string[]
 ) {
   const response = await axios.post(Endpoints.onboard, {
@@ -14,7 +13,6 @@ export async function onboard(
     headers: {
       "Authorization": token,
       "Content-Type": "application/json",
-      "x-ms-client-tenant-id": tenantId,
       "x-ms-aad-user-token": token
     }
   });

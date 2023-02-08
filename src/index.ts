@@ -10,7 +10,6 @@ import { printAssessments } from "./utils/output";
 
 async function start() {
   try {
-    const tenantId = core.getInput('tenant-id');
     const deploymentId = core.getInput('deployment-id');
     const reportName = core.getInput('report-name');
 
@@ -33,7 +32,7 @@ async function start() {
 
     const subscriptionIds = resourceIds.map(id => getResourceSubscription(id));
 
-    await onboard(token, tenantId, subscriptionIds);
+    await onboard(token, subscriptionIds);
     await waitOnboardFinish();
     core.info(`Successfully onboarded subscriptions`);
 
@@ -43,7 +42,7 @@ async function start() {
     }
 
     core.info("Generating quick assessments for all resources...");
-    const results = await triggerEvaluation(token, tenantId, resourceIds);
+    const results = await triggerEvaluation(token, resourceIds);
     printAssessments(results);
 
   } catch (error) {
