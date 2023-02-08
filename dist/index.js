@@ -57,7 +57,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getResourceIdsByDeployment = void 0;
+exports.getResourceIdsByDeployments = exports.getResourceIdsByDeployment = void 0;
 const arm_resources_1 = __nccwpck_require__(4280);
 const common_1 = __nccwpck_require__(3873);
 function getResourceIdsByDeployment(cred, deploymentId) {
@@ -76,6 +76,14 @@ function getResourceIdsByDeployment(cred, deploymentId) {
     });
 }
 exports.getResourceIdsByDeployment = getResourceIdsByDeployment;
+function getResourceIdsByDeployments(cred, deploymentIds) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let allResources = [];
+        deploymentIds.map((id) => __awaiter(this, void 0, void 0, function* () { return allResources = allResources.concat(yield getResourceIdsByDeployment(cred, id)); }));
+        return [...new Set(allResources)];
+    });
+}
+exports.getResourceIdsByDeployments = getResourceIdsByDeployments;
 
 
 /***/ }),
@@ -292,17 +300,17 @@ const output_1 = __nccwpck_require__(6817);
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const deploymentId = core.getInput('deployment-id');
+            const deploymentIds = core.getInput('deployment-ids');
             const reportName = core.getInput('report-name');
-            if (!deploymentId && !reportName) {
+            if ((!deploymentIds || deploymentIds.length === 0) && !reportName) {
                 throw new Error("Please configure deployment id or report name");
             }
             const cred = new identity_1.AzureCliCredential();
             const token = yield (0, common_1.getCredToken)(cred);
             const acatClient = new arm_appcomplianceautomation_1.AppComplianceAutomationToolForMicrosoft365(cred);
             let resourceIds = [];
-            if (deploymentId) {
-                resourceIds = yield (0, deployment_1.getResourceIdsByDeployment)(cred, deploymentId);
+            if (deploymentIds) {
+                resourceIds = yield (0, deployment_1.getResourceIdsByDeployments)(cred, JSON.parse(deploymentIds));
             }
             else {
                 const report = yield (0, report_1.getReport)(acatClient, token, reportName);

@@ -20,3 +20,13 @@ export async function getResourceIdsByDeployment(
     }
   ) ?? [];
 }
+
+export async function getResourceIdsByDeployments(
+  cred: AzureCliCredential,
+  deploymentIds: string[]
+): Promise<string[]> {
+
+  let allResources: string[] = [];
+  deploymentIds.map(async id => allResources = allResources.concat(await getResourceIdsByDeployment(cred, id)))
+  return [... new Set(allResources)];
+}

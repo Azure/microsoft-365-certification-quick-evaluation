@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import { AppComplianceAutomationToolForMicrosoft365 } from "@azure/arm-appcomplianceautomation";
 import { AzureCliCredential } from "@azure/identity";
-import { getResourceIdsByDeployment } from "./data/deployment";
+import { getResourceIdsByDeployment, getResourceIdsByDeployments } from "./data/deployment";
 import { onboard } from "./data/onboard";
 import { createOrUpdateReport, getReport } from "./data/report";
 import { triggerEvaluation } from "./data/triggerEvaluation";
@@ -10,10 +10,10 @@ import { printAssessments } from "./utils/output";
 
 async function start() {
   try {
-    const deploymentId = core.getInput('deployment-id');
+    const deploymentIds = core.getInput('deployment-ids');
     const reportName = core.getInput('report-name');
 
-    if (!deploymentId && !reportName) {
+    if ((!deploymentIds || deploymentIds.length === 0) && !reportName) {
       throw new Error("Please configure deployment id or report name");
     }
 
@@ -22,9 +22,8 @@ async function start() {
     const acatClient = new AppComplianceAutomationToolForMicrosoft365(cred);
 
     let resourceIds: string[] = [];
-
-    if (deploymentId) {
-      resourceIds = await getResourceIdsByDeployment(cred, deploymentId);
+    if (deploymentIds) {
+      resourceIds = await getResourceIdsByDeployments(cred, JSON.parse(deploymentIds));
     } else {
       const report = await getReport(acatClient, token, reportName)
       resourceIds = report.properties.resources.map(meta => meta.resourceId);

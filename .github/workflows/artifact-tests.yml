@@ -36,4 +36,7 @@ jobs:
       uses: ./ # Uses an action in the root directory
       with:
         report-name: 'test-report'
-        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        deployment-ids: '[
+          "${{ steps.deployarm.outputs.deploymentId }}",
+          "${{ steps.deploybicep.outputs.deploymentId }}"
+        ]'
