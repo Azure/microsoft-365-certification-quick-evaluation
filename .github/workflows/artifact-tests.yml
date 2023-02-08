@@ -43,7 +43,7 @@ jobs:
       uses: ./ # Uses an action in the root directory
       with:
         deployment-ids: '[
-          "${{ steps.deployarm.outputs.deploymentId }}"
+          "${{ steps.deployarm.outputs.deploymentId }}",
           "${{ steps.deploybicep.outputs.deploymentId }}"
         ]'
 
@@ -53,5 +53,6 @@ jobs:
       with:
         deployment-ids: '[
           "${{ steps.deployarm.outputs.deploymentId }}",
+          "${{ steps.deploybicep.outputs.deploymentId }}"
         ]'
         report-name: ${{ secrets.REPORT_NAME }}    
