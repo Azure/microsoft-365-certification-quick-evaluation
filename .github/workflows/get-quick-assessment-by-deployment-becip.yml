@@ -3,7 +3,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Test artifact
+    name: Get quick assessment by deployment bicep
     steps:
     - name: Checkout
       uses: actions/checkout@v3
