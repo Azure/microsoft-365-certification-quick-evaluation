@@ -78,9 +78,9 @@ function getResourceIdsByDeployment(cred, deploymentId) {
 exports.getResourceIdsByDeployment = getResourceIdsByDeployment;
 function getResourceIdsByDeployments(cred, deploymentIds) {
     return __awaiter(this, void 0, void 0, function* () {
-        let allResources = [];
-        deploymentIds.map((id) => __awaiter(this, void 0, void 0, function* () { return allResources = allResources.concat(yield getResourceIdsByDeployment(cred, id)); }));
-        return [...new Set(allResources)];
+        const promises = deploymentIds.map((id) => __awaiter(this, void 0, void 0, function* () { return yield getResourceIdsByDeployment(cred, id); }));
+        const allResources = yield Promise.all(promises);
+        return [...new Set(allResources.flat())];
     });
 }
 exports.getResourceIdsByDeployments = getResourceIdsByDeployments;
