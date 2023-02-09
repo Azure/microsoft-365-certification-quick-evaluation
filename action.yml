@@ -1,5 +1,5 @@
 name: 'Get Microsoft 365 quick assessments'
-description: 'Get Microsoft 365 quick assessments action is part of App Compliance Automation Tool for Microsoft 365(ACAT). With get Microsoft 365 quick assessments Action you can now get Microsoft 365 quick assessments of Azure Resources by report or by deployment from your Github Workflows. Since the get Microsoft 365 quick assessments action can be added directly after the resource deployment, you can have a immediately result of the compliance status of resources deployed this time. Its now even easier to follow safe deployment practices and catch non-compliant issues.'
+description: 'Get Microsoft 365 quick assessments action helps you get immediately compliance result by report or by deployments.'
 inputs:
   report-name:
     description: 'name of the compliance report'
