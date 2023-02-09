@@ -10,7 +10,7 @@ The definition of this Github Action is in [action.yml]()
 # Pre-requisites:
 * Azure Login Action: Authenticate using [Azure Login](https://github.com/Azure/login)  action. The get Microsoft 365 quick assessments action assumes that Azure Login is done using an Azure service principal that has [sufficient permissions](https://github.com/Azure/microsoft-365-certification-quick-evaluation#configure-credentials-for-azure-login-action) trigger and get quick assessment on the selected scopes. Once login is done, the next set of actions in the workflow can perform tasks such as geting quick assessments by report or by deployment. For more details on permissions, checkout 'Configure credentials for Azure login action' section in this page  or alternatively you can refer the full [documentation](https://github.com/Azure/login) of Azure Login Action.
 * Create an ACAT report(optional): Go to Azure Portal to create an ACAT report for you application, see [ACAT tutorial](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat). At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
-* Prepare the deployment id(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of get Microsoft 365 quick assessments action. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment ids` must be done.
+* Prepare the deployment id or ids(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of get Microsoft 365 quick assessments action. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment ids` must be done.
 
 
 
@@ -124,7 +124,7 @@ jobs:
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
         deployment-ids: '[
-          "${{ steps.deployarm.outputs.deploymentId }}",
+          "${{ steps.deployarm.outputs.deploymentId }}"
         ]'
         
 ```
@@ -166,7 +166,7 @@ jobs:
       with:
 
         deployment-ids: '[
-          "${{ steps.deploybicep.outputs.deploymentId }}",
+          "${{ steps.deploybicep.outputs.deploymentId }}"
         ]'
         
 ```
