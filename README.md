@@ -19,6 +19,42 @@ The definition of this Github Action is in [action.yml]()
 * `report-name`: Optional. If you want to get Microsoft 365 quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created.[How to create an ACAT report](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat).At least one of the 2 parameters `report-name` and `deployment-id` must be filled. (If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 * `deployment-id`: Optional. If you want to get Microsoft 365 quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-id`. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.(If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 
+# How to get deployment id
+* If you deploy resources through github actions by ARM template, you can specify deployment-id as the output. Then you can use the value in the following steps, to get quick assessments.
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata": {
+        ...
+    },
+    "parameters": {
+        ...
+    },
+    "resources": [
+        ...
+    ],
+    "outputs": {
+        "deploymentId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Resources/deployments',deployment().name)]"
+        }
+    }
+}
+```
+* If you deploy resources through github actions by bicep, you can specify deployment-id as the output.
+```bash
+
+@description('xxx')
+...
+...
+
+output deploymentId string = resourceId('Microsoft.Resources/deployments', deployment().name)
+
+```
+
+* Or you can call the rest api [Deployments - list at scope](https://learn.microsoft.com/en-us/rest/api/resources/deployments/list-at-scope)
+
 
 # End-to-End Sample Workflows
 
