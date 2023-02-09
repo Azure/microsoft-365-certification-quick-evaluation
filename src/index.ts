@@ -5,7 +5,7 @@ import { getResourceIdsByDeployments } from "./data/deployment";
 import { onboard } from "./data/onboard";
 import { createOrUpdateReport, getReport } from "./data/report";
 import { triggerEvaluation } from "./data/triggerEvaluation";
-import { getCredToken, getResourceSubscription, waitOnboardFinish } from "./utils/common";
+import { getCredToken, getResourceSubscription, tryParseJsonArray, waitOnboardFinish } from "./utils/common";
 import { printAssessments } from "./utils/output";
 
 async function start() {
@@ -22,17 +22,9 @@ async function start() {
     const acatClient = new AppComplianceAutomationToolForMicrosoft365(cred);
 
     let resourceIds: string[] = [];
-    
+
     if (deploymentJson) {
-      let deploymentIds: string[] = [];
-      try {
-        deploymentIds = JSON.parse(deploymentJson);
-        if (deploymentIds.length === 0) {
-          core.setFailed("Deployment ids can not be empty");
-        }
-      } catch (error) {
-        core.setFailed(`Invalid json string in deployment ids "${deploymentJson}", error message:${error.message}`);
-      }
+      let deploymentIds: string[] = tryParseJsonArray(deploymentJson);
       resourceIds = await getResourceIdsByDeployments(cred, deploymentIds);
     } else {
       const report = await getReport(acatClient, token, reportName)
