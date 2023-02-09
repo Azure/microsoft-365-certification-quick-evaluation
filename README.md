@@ -26,13 +26,13 @@ The definition of this Github Action is in [action.yml]()
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "metadata": {
-        ...
+        "..."
     },
     "parameters": {
-        ...
+        "..."
     },
     "resources": [
-        ...
+        "..."
     ],
     "outputs": {
         "deploymentId": {
@@ -53,7 +53,7 @@ output deploymentId string = resourceId('Microsoft.Resources/deployments', deplo
 
 ```
 
-* Or you can call the rest api [Deployments - list at scope](https://learn.microsoft.com/en-us/rest/api/resources/deployments/list-at-scope)
+* Or you can call the rest api [Deployments - list at scope](https://learn.microsoft.com/en-us/rest/api/resources/deployments/list-at-scope) to get deployment ids.
 
 
 # End-to-End Sample Workflows
