@@ -20,6 +20,27 @@ export function getDeploymentMeta(deploymentId: string): Map<string, string> {
   return deploymentMeta;
 }
 
+export function tryParseJsonArray(jsonStr: string): string[] {
+  let jsonObj;
+  //make sure input is valid json
+  try {
+    jsonObj = JSON.parse(jsonStr);
+  } catch (error) {
+    throw new Error(`Invalid json string in deployment ids "${jsonStr}", error message:${error.message}`);
+  }
+
+  if (!Array.isArray(jsonObj)) {
+    throw new Error("Deployment ids should be an array");
+  }
+  if (jsonObj.length === 0) {
+    throw new Error("Deployment ids should not be empty");
+  }
+  if (typeof jsonObj[0] !== "string") {
+    throw new Error("Deployment ids should be an array of string");
+  }
+  return jsonObj;
+}
+
 export async function waitOnboardFinish() {
   // TODO: replace with check dependency successfully created
   // wait for 30 seconds temporarily

@@ -310,16 +310,7 @@ function start() {
             const acatClient = new arm_appcomplianceautomation_1.AppComplianceAutomationToolForMicrosoft365(cred);
             let resourceIds = [];
             if (deploymentJson) {
-                let deploymentIds = [];
-                try {
-                    deploymentIds = JSON.parse(deploymentJson);
-                    if (deploymentIds.length === 0) {
-                        core.setFailed("Deployment ids can not be empty");
-                    }
-                }
-                catch (error) {
-                    core.setFailed(`Invalid json string in deployment ids "${deploymentJson}", error message:${error.message}`);
-                }
+                let deploymentIds = (0, common_1.tryParseJsonArray)(deploymentJson);
                 resourceIds = yield (0, deployment_1.getResourceIdsByDeployments)(cred, deploymentIds);
             }
             else {
@@ -363,7 +354,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.waitOnboardFinish = exports.getDeploymentMeta = exports.getResourceSubscription = exports.getCredToken = void 0;
+exports.waitOnboardFinish = exports.tryParseJsonArray = exports.getDeploymentMeta = exports.getResourceSubscription = exports.getCredToken = void 0;
 const promises_1 = __nccwpck_require__(8670);
 function getCredToken(cred) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -386,6 +377,27 @@ function getDeploymentMeta(deploymentId) {
     return deploymentMeta;
 }
 exports.getDeploymentMeta = getDeploymentMeta;
+function tryParseJsonArray(jsonStr) {
+    let jsonObj;
+    //make sure input is valid json
+    try {
+        jsonObj = JSON.parse(jsonStr);
+    }
+    catch (error) {
+        throw new Error(`Invalid json string in deployment ids "${jsonStr}", error message:${error.message}`);
+    }
+    if (!Array.isArray(jsonObj)) {
+        throw new Error("Deployment ids should be an array");
+    }
+    if (jsonObj.length === 0) {
+        throw new Error("Deployment ids should not be empty");
+    }
+    if (typeof jsonObj[0] !== "string") {
+        throw new Error("Deployment ids should be an array of string");
+    }
+    return jsonObj;
+}
+exports.tryParseJsonArray = tryParseJsonArray;
 function waitOnboardFinish() {
     return __awaiter(this, void 0, void 0, function* () {
         // TODO: replace with check dependency successfully created
