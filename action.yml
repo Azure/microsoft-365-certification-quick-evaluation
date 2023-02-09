@@ -1,5 +1,5 @@
 name: 'Get Microsoft 365 quick assessments'
-description: 'Get Microsoft 365 quick assessments action is part of App Compliance Automation Tool for Microsoft 365(ACAT). With this Action you can now get Microsoft 365 quick assessments of Azure Resources by report or by deployments. You can add this action directly after the resource deployment, you can have a immediately result of the compliance status.'
+description: 'Get Microsoft 365 quick assessments action helps you get immediately compliance result by report or by deployments.'
 inputs:
   report-name:
     description: 'name of the compliance report'
