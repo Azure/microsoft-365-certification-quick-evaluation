@@ -10,14 +10,14 @@ The definition of this Github Action is in [action.yml]()
 # Pre-requisites:
 * Azure Login Action: Authenticate using [Azure Login](https://github.com/Azure/login)  action. The get Microsoft 365 quick assessments action assumes that Azure Login is done using an Azure service principal that has [sufficient permissions](https://github.com/Azure/microsoft-365-certification-quick-evaluation#configure-credentials-for-azure-login-action) trigger and get quick assessment on the selected scopes. Once login is done, the next set of actions in the workflow can perform tasks such as geting quick assessments by report or by deployment. For more details on permissions, checkout 'Configure credentials for Azure login action' section in this page  or alternatively you can refer the full [documentation](https://github.com/Azure/login) of Azure Login Action.
 * Create an ACAT report(optional): Go to Azure Portal to create an ACAT report for you application, see [ACAT tutorial](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat). At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
-* Prepare the deployment id(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of get Microsoft 365 quick assessments action. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment id` must be done.
+* Prepare the deployment id(optional): You can also get quick assessment by your deployment, set the deployment id as output in your former deploy action, and take the deployment id as input of get Microsoft 365 quick assessments action. At least one of the 2 optional pre-requisites `Create an ACAT report` and `Prepare the deployment ids` must be done.
 
 
 
 # Inputs for the Action
 
-* `report-name`: Optional. If you want to get Microsoft 365 quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created.[How to create an ACAT report](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat).At least one of the 2 parameters `report-name` and `deployment-id` must be filled. (If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
-* `deployment-id`: Optional. If you want to get Microsoft 365 quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-id`. At least one of the 2 parameters `report-name` and `deployment-id` must be filled.(If both `report-name` and `deployment-id` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
+* `report-name`: Optional. If you want to get Microsoft 365 quick assessments by report, you should create a report before you run the github action and set the report-name value the name of the report you created.[How to create an ACAT report](https://learn.microsoft.com/en-us/microsoft-365-app-certification/docs/automate-certification-with-acat).At least one of the 2 parameters `report-name` and `deployment-ids` must be filled. (If both `report-name` and `deployment-ids` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
+* `deployment-ids`: Optional. If you want to get Microsoft 365 quick assessments by deployment, you should get the id of your deployment, and pass the value to `deployment-ids`. At least one of the 2 parameters `report-name` and `deployment-ids` must be filled.(If both `report-name` and `deployment-ids` are filled, the action will help get assessments of the resources in the deployments, and update the report's resource list with the resources in the deployment).
 
 
 # End-to-End Sample Workflows
@@ -87,7 +87,9 @@ jobs:
     - name: Get Microsoft 365 quick assessments
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
-        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        deployment-ids: '[
+          "${{ steps.deployarm.outputs.deploymentId }}",
+        ]'
         
 ```
 The above workflow will get Microsoft 365 quick assessments by ARM template deployment. 
@@ -127,7 +129,9 @@ jobs:
       uses: azure/get-microsoft-365-quick-assessment@v0
       with:
 
-        deployment-id: ${{ steps.deployarm.outputs.deploymentId }}
+        deployment-ids: '[
+          "${{ steps.deploybicep.outputs.deploymentId }}",
+        ]'
         
 ```
 The above workflow will get Microsoft 365 quick assessments by bicep deployment. 
