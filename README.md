@@ -81,7 +81,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Get Microsoft 365 certification quick evaluation
-      uses: azure/microsoft-365-certificate-quick-evaluation@v1
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         report-name: 'test-report'
         
@@ -121,7 +121,7 @@ jobs:
     - run: echo ${{ steps.deployarm.outputs.deploymentId }}
 
     - name: Get Microsoft 365 quick evaluation
-      uses: azure/microsoft-365-certificate-quick-evaluation@v1
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         deployment-ids: '[
           "${{ steps.deployarm.outputs.deploymentId }}"
@@ -162,7 +162,7 @@ jobs:
     - run: echo ${{ steps.deploybicep.outputs.deploymentId }}
 
     - name: Get Microsoft 365 quick evaluation
-      uses: azure/microsoft-365-certificate-quick-evaluation@v1
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         deployment-ids: '[
           "${{ steps.deploybicep.outputs.deploymentId }}"

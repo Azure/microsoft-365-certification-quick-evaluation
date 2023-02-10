@@ -15,7 +15,7 @@ jobs:
 
     # Get quick assessments by report
     - name: get M365 quick assessments by report
-      uses: azure/microsoft-365-certificate-quick-evaluation@v1
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         report-name: ${{ secrets.REPORT_NAME }}
 
@@ -40,7 +40,7 @@ jobs:
 
     # Get quick assessments by deployment and update the deployed resources in the report.
     - name: get M365 quick assessments by deployment ids
-      uses: azure/microsoft-365-certificate-quick-evaluation@v1
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         deployment-ids: '[
           "${{ steps.deployarm.outputs.deploymentId }}",
@@ -49,7 +49,7 @@ jobs:
 
     # Get quick assessments by deployment and update the deployed resources in the report.
     - name: get M365 quick assessments by deployment ids and update report
-      uses: azure/microsoft-365-certificate-quick-evaluation@v1
+      uses: azure/microsoft-365-certification-quick-evaluation@v1
       with:
         deployment-ids: '[
           "${{ steps.deployarm.outputs.deploymentId }}",
