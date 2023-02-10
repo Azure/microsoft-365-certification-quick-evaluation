@@ -1,5 +1,5 @@
-name: 'Get Microsoft 365 quick assessments'
-description: 'Get Microsoft 365 quick assessments action helps you get immediately compliance result by report or by deployments.'
+name: 'Microsoft 365 certification quick evaluation'
+description: 'Microsoft 365 certiquick assessments action helps you get immediately compliance result by report or by deployments.'
 inputs:
   report-name:
     description: 'name of the compliance report'
