@@ -21,7 +21,10 @@ jobs:
       run: |
         npm run build
         npm run package
-      working-directory: ./
+
+    - name: Run unit tests
+      run: |
+        npm run test
 
     - name: Azure login
       uses: Azure/login@v1.4.6
