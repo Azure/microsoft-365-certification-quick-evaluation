@@ -220,7 +220,7 @@ With the Azure login Action, you can perform an Azure login using [Azure service
   * Paste the contents of the clipboard as the value of  the above secret variable.
   * Use the secret variable in the Azure Login Action(Refer the End-to-End Sample Workflows section )
 
-```
+
 # Feedback
 
 If you have any changes you’d like to see or suggestions for this action,  we’d love your feedback ❤️ . Please feel free to raise a GitHub issue in this repository describing your suggestion. This would enable us to label and track it properly. You can do the same if you encounter a problem with the feature as well.
