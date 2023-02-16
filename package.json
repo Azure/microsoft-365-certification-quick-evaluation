@@ -1,5 +1,5 @@
 {
-  "name": "analyse-microsoft-365-compliance-results",
+  "name": "microsoft-365-certification-quick-evaluation",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qinzhouxu/analyse-microsoft-365-compliance-results.git"
+    "url": "git+https://github.com/azure/microsoft-365-certification-quick-evaluation.git"
   },
   "keywords": [],
   "author": "Microsoft",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/qinzhouxu/analyse-microsoft-365-compliance-results/issues"
+    "url": "https://github.com/azure/microsoft-365-certification-quick-evaluation/issues"
   },
-  "homepage": "https://github.com/qinzhouxu/analyse-microsoft-365-compliance-results#readme",
+  "homepage": "https://github.com/azure/microsoft-365-certification-quick-evaluation#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
