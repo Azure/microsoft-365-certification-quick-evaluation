@@ -1,4 +1,12 @@
+<<<<<<< HEAD:.github/workflows/release-test.yml
 on: push
+=======
+on:
+  pull_request_target:
+    branches:
+      - main
+      - 'releases/*'
+>>>>>>> d9d1e83ddeeb07bb1da6b92320843d96f4c00e77:.github/workflows/artifact-tests.yml
 
 jobs:
   build:
@@ -8,6 +16,27 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     
+<<<<<<< HEAD:.github/workflows/release-test.yml
+=======
+    - name: Set Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+    
+    - name: Install npm packages
+      run: npm install
+    
+    - name: Compile artifact package
+      run: |
+        npm run build
+        npm run package
+
+    - name: Run unit tests
+      run: |
+        npm run test
+
+>>>>>>> d9d1e83ddeeb07bb1da6b92320843d96f4c00e77:.github/workflows/artifact-tests.yml
     - name: Azure login
       uses: Azure/login@v1.4.6
       with:
