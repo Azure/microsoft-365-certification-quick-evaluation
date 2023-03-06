@@ -6,8 +6,8 @@ export function isResponseOk(status: number): boolean {
   return status >= 200 && status <= 299;
 }
 
-const RETRY_AFTER = 2000;
-const MAX_RETRY = 900;
+const RETRY_AFTER = 30 * 1000;
+const MAX_RETRY = 60;
 
 export async function pollUntilDone(token: string, operationUrl: string) {
 
