@@ -1,0 +1,45 @@
+
+name: yajun test build
+
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Microsoft 365 quick evaluation test
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Azure login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+     
+    - name: Deploy SA with bicep
+      id: deploybicep
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
+        template: ./deploy/Storage.bicep
+        parameters: storageAccountType=Standard_LRS
+    - run: echo ${{ steps.deploybicep.outputs.deploymentId }}
+
+    - name: Deploy SA with ARM template
+      id: deployarmSA
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
+        template: ./deploy/Storage.template.json
+        parameters: storageAccountType=Standard_LRS
+    - run: echo ${{ steps.deployarmSA.outputs.deploymentId }}
+
+    - name: ACAT get quick assessment
+      uses: azure/microsoft-365-certification-quick-evaluation@v1.0.1
+      with:
+        report-name: 'yajun-action-test'
+        deployment-ids: '[
+        "${{ steps.deploybicep.outputs.deploymentId }}",
+        "${{ steps.deployarmSA.outputs.deploymentId }}",
+        ]'
