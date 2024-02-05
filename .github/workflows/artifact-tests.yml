@@ -3,6 +3,7 @@ on:
     branches:
       - main
       - 'releases/*'
+      - test
 
 jobs:
   build:
