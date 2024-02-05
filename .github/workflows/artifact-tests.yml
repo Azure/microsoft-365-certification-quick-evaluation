@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    name: Microsoft 365 quick evaluation test 
+    name: Microsoft 365 quick evaluation test
     steps:
     - name: Checkout
       uses: actions/checkout@v3
