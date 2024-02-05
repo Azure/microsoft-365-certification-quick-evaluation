@@ -41,7 +41,7 @@ jobs:
     - run: echo ${{ steps.deployarmSA.outputs.deploymentId }}
 
     - name: ACAT get quick assessment
-      uses: azure/microsoft-365-certification-quick-evaluation@v1.0.1
+      uses: ./
       with:
         report-name: ${{ secrets.REPORT_NAME }}
         deployment-ids: '[
