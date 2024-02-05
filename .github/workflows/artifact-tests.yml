@@ -1,3 +1,4 @@
+
 on:
   pull_request_target:
     branches:
@@ -7,52 +8,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    name: Get Quick Assessments Tests
+    runs-on: windows-latest
+    name: Microsoft 365 quick evaluation test 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    
-    - name: Set Node.js 16.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16.x
-        cache: 'npm'
-    
-    - name: Install npm packages
-      run: npm install
-    
-    - name: Compile artifact package
-      run: |
-        npm run build
-        npm run package
-
-    - name: Run unit tests
-      run: |
-        npm run test
 
     - name: Azure login
       uses: Azure/login@v1.4.6
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    # Get quick assessments by report
-    - name: get M365 quick assessments by report
-      uses: ./ # Uses an action in the root directory
-      with:
-        report-name: ${{ secrets.REPORT_NAME }}
-
-    # Get quick assessments by deployment of ARM template    
-    - name: Deploy with ARM template
-      id: deployarm
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
-        template: ./deploy/Storage.template.json
-        parameters: storageAccountType=Standard_LRS
-
-    - name: Deploy with Bicep
+     
+    - name: Deploy SA with bicep
       id: deploybicep
       uses: azure/arm-deploy@v1
       with:
@@ -60,22 +27,23 @@ jobs:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
         template: ./deploy/Storage.bicep
         parameters: storageAccountType=Standard_LRS
+    - run: echo ${{ steps.deploybicep.outputs.deploymentId }}
 
-    # Get quick assessments by deployment and update the deployed resources in the report.
-    - name: get M365 quick assessments by deployment ids
-      uses: ./ # Uses an action in the root directory
+    - name: Deploy SA with ARM template
+      id: deployarmSA
+      uses: azure/arm-deploy@v1
       with:
-        deployment-ids: '[
-          "${{ steps.deployarm.outputs.deploymentId }}",
-          "${{ steps.deploybicep.outputs.deploymentId }}"
-        ]'
+        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
+        template: ./deploy/Storage.template.json
+        parameters: storageAccountType=Standard_LRS
+    - run: echo ${{ steps.deployarmSA.outputs.deploymentId }}
 
-    # Get quick assessments by deployment and update the deployed resources in the report.
-    - name: get M365 quick assessments by deployment ids and update report
-      uses: ./ # Uses an action in the root directory
+    - name: ACAT get quick assessment
+      uses: azure/microsoft-365-certification-quick-evaluation@v1.0.1
       with:
+        report-name: 'yajun-action-test'
         deployment-ids: '[
-          "${{ steps.deployarm.outputs.deploymentId }}",
-          "${{ steps.deploybicep.outputs.deploymentId }}"
+        "${{ steps.deploybicep.outputs.deploymentId }}",
+        "${{ steps.deployarmSA.outputs.deploymentId }}",
         ]'
-        report-name: ${{ secrets.REPORT_NAME }}    
