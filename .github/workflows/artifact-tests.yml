@@ -45,5 +45,5 @@ jobs:
         report-name: 'yajun-action-test'
         deployment-ids: '[
         "${{ steps.deploybicep.outputs.deploymentId }}",
-        "${{ steps.deployarmSA.outputs.deploymentId }}",
+        "${{ steps.deployarmSA.outputs.deploymentId }}"
         ]'
