@@ -1,11 +1,7 @@
 
-on:
-  pull_request_target:
-    branches:
-      - main
-      - 'releases/*'
-      - test
+name: yajun test build
 
+on: workflow_dispatch
 jobs:
   build:
     runs-on: windows-latest
