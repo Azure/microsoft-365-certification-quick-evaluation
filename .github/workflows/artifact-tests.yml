@@ -43,7 +43,7 @@ jobs:
     - name: ACAT get quick assessment
       uses: azure/microsoft-365-certification-quick-evaluation@v1.0.1
       with:
-        report-name: 'yajun-action-test'
+        report-name: ${{ secrets.REPORT_NAME }}
         deployment-ids: '[
         "${{ steps.deploybicep.outputs.deploymentId }}",
         "${{ steps.deployarmSA.outputs.deploymentId }}"
