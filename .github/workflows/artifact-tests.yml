@@ -10,10 +10,10 @@ jobs:
     name: Get Quick Assessments Tests
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
     
     - name: Set Node.js 16.x
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
       with:
         node-version: 16.x
         cache: 'npm'
@@ -31,7 +31,7 @@ jobs:
         npm run test
 
     - name: Azure login
-      uses: Azure/login@v1.4.6
+      uses: Azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2 # v1.4.6
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -44,7 +44,7 @@ jobs:
     # Get quick assessments by deployment of ARM template    
     - name: Deploy with ARM template
       id: deployarm
-      uses: azure/arm-deploy@v1
+      uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06 # v1.0.9
       with:
         subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
         resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
@@ -53,7 +53,7 @@ jobs:
 
     - name: Deploy with Bicep
       id: deploybicep
-      uses: azure/arm-deploy@v1
+      uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06 # v1.0.9
       with:
         subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
         resourceGroupName: ${{ secrets.RESOURCE_GROUP}}
